@@ -51,6 +51,8 @@ public struct NavigationBar: BlockElement {
     /// An array of items to show in this navigation bar.
     let items: [NavigationItem]
 
+    let text: (any InlineElement)?
+
     /// The style to use when rendering this bar.
     var style = NavigationBarStyle.default
 
@@ -65,6 +67,7 @@ public struct NavigationBar: BlockElement {
     ) {
         self.logo = logo
         self.items = []
+        self.text = nil
     }
 
     /// Creates a new `NavigationBar` instance from the `logo` and
@@ -75,10 +78,12 @@ public struct NavigationBar: BlockElement {
     /// `NavigationItem` objects.
     public init(
         logo: (any InlineElement)? = nil,
-        @ElementBuilder<NavigationItem> items: () -> [NavigationItem]
+        @ElementBuilder<NavigationItem> items: () -> [NavigationItem],
+        text: (any InlineElement)? = nil
     ) {
         self.logo = logo
         self.items = items()
+        self.text = text
     }
 
     /// Adjusts the style of this navigation bar.
@@ -149,6 +154,11 @@ public struct NavigationBar: BlockElement {
                             }
                         }
                         .class("navbar-nav", "mb-2", "mb-md-0", "col", itemAlignment.rawValue)
+
+                        if let text {
+                            text
+                                .class("navbar-text")
+                        }
                     }
                     .class("collapse", "navbar-collapse")
                     .id("navbarCollapse")
